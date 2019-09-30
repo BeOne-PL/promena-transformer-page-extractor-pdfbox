@@ -11,6 +11,8 @@ import pl.beone.promena.transformer.contract.data.singleTransformedDataDescripto
 import pl.beone.promena.transformer.contract.model.Data
 import pl.beone.promena.transformer.contract.model.Parameters
 import pl.beone.promena.transformer.pageextraction.pdfbox.applicationmodel.getPages
+import pl.beone.promena.transformer.pageextraction.pdfbox.extension.getInputStream
+import pl.beone.promena.transformer.pageextraction.pdfbox.extension.toPDDocument
 import java.io.OutputStream
 
 internal abstract class AbstractTransformer {
@@ -20,7 +22,7 @@ internal abstract class AbstractTransformer {
     protected abstract fun createData(): Data
 
     fun transform(singleDataDescriptor: DataDescriptor.Single, targetMediaType: MediaType, parameters: Parameters): TransformedDataDescriptor.Single {
-        val (data, mediaType, metadata) = singleDataDescriptor
+        val (data, _, metadata) = singleDataDescriptor
 
         process(data, parameters)
 
@@ -29,6 +31,7 @@ internal abstract class AbstractTransformer {
 
     private fun process(data: Data, parameters: Parameters) {
         val pages = parameters.getPages()
+            .map { it - 1 } // because pages are indexed from 0
 
         PDDocument.load(data.getInputStream()).use { document ->
             mergePages(pages.map(document::getPage))
@@ -38,8 +41,7 @@ internal abstract class AbstractTransformer {
     private fun mergePages(pages: List<PDPage>) {
         PDFMergerUtility()
             .apply { destinationStream = getOutputStream() }
-            .also { it.addSources(pages.map(PDPage::getContents)) }
-            .also { it.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly()) }
+            .also { merger -> merger.addSources(pages.map { page -> page.toPDDocument().getInputStream() }) }
+            .also { merger -> merger.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly()) }
     }
-
 }

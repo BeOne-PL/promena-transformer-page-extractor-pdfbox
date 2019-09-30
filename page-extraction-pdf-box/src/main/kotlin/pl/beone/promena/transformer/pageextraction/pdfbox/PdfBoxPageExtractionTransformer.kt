@@ -26,7 +26,7 @@ class PdfBoxPageExtractionTransformer(
         when (internalCommunicationParameters.getId()) {
             FileCommunicationParameters.ID ->
                 FileTransformer((internalCommunicationParameters as FileCommunicationParameters).getDirectory())
-            else                           ->
+            else ->
                 MemoryTransformer()
         }
 
