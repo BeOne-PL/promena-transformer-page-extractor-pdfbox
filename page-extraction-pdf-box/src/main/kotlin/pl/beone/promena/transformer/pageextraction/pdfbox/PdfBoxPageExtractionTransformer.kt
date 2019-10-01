@@ -14,6 +14,8 @@ import pl.beone.promena.transformer.pageextraction.pdfbox.transformer.FileTransf
 import pl.beone.promena.transformer.pageextraction.pdfbox.transformer.MemoryTransformer
 
 class PdfBoxPageExtractionTransformer(
+    private val settings: PdfBoxPageExtractionTransformerSettings,
+    private val defaultParameters: PdfBoxPageExtractionTransformerDefaultParameters,
     private val internalCommunicationParameters: CommunicationParameters
 ) : Transformer {
 
@@ -25,9 +27,9 @@ class PdfBoxPageExtractionTransformer(
     private fun determineTransformer(): AbstractTransformer =
         when (internalCommunicationParameters.getId()) {
             FileCommunicationParameters.ID ->
-                FileTransformer((internalCommunicationParameters as FileCommunicationParameters).getDirectory())
+                FileTransformer(settings, defaultParameters, (internalCommunicationParameters as FileCommunicationParameters).getDirectory())
             else ->
-                MemoryTransformer()
+                MemoryTransformer(settings, defaultParameters)
         }
 
     override fun isSupported(dataDescriptor: DataDescriptor, targetMediaType: MediaType, parameters: Parameters) {

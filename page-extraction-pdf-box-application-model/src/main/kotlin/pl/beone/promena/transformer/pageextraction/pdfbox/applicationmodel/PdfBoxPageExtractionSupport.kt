@@ -7,6 +7,7 @@ import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstant
 import pl.beone.promena.transformer.contract.data.DataDescriptor
 import pl.beone.promena.transformer.contract.model.Parameters
 import pl.beone.promena.transformer.pageextraction.pdfbox.applicationmodel.PdfBoxPageExtractionParametersConstants.Pages
+import pl.beone.promena.transformer.pageextraction.pdfbox.applicationmodel.PdfBoxPageExtractionParametersConstants.Relaxed
 
 object PdfBoxPageExtractionSupport {
 
@@ -30,6 +31,8 @@ object PdfBoxPageExtractionSupport {
     object ParametersSupport {
         fun isSupported(parameters: Parameters) {
             parameters.validate(Pages.NAME, Pages.CLASS, true)
+            parameters.validatePagesParameter()
+            parameters.validate(Relaxed.NAME, Relaxed.CLASS, false)
         }
 
         private fun Parameters.validate(name: String, clazz: Class<*>, mandatory: Boolean) {
@@ -41,6 +44,12 @@ object PdfBoxPageExtractionSupport {
                 }
             } catch (e: TypeConversionException) {
                 throw TransformationNotSupportedException.unsupportedParameterType(name, clazz)
+            }
+        }
+
+        private fun Parameters.validatePagesParameter() {
+            if (getPages().isEmpty()) {
+                throw TransformationNotSupportedException.custom("Parameter <${Pages.NAME}> must contain at least <1> page")
             }
         }
     }

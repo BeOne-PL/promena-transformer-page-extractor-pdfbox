@@ -27,7 +27,7 @@ class PdfBoxPageExtractionTransformerSupportTest {
 
         every { PdfBoxPageExtractionSupport.isSupported(dataDescriptor, targetMediaType, parameters) } just Runs
 
-        PdfBoxPageExtractionTransformer(mockk())
+        PdfBoxPageExtractionTransformer(mockk(), mockk(), mockk())
             .isSupported(dataDescriptor, targetMediaType, parameters)
 
         verify(exactly = 1) { PdfBoxPageExtractionSupport.isSupported(dataDescriptor, targetMediaType, parameters) }

@@ -8,4 +8,9 @@ object PdfBoxPageExtractionParametersConstants {
         const val NAME = "pages"
         val CLASS = getClazz<List<Int>>()
     }
+
+    object Relaxed {
+        const val NAME = "relaxed"
+        val CLASS = Boolean::class.java
+    }
 }

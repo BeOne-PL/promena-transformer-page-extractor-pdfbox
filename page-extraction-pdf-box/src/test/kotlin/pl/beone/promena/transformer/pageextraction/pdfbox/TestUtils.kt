@@ -4,6 +4,7 @@ import io.kotlintest.matchers.collections.shouldHaveSize
 import io.kotlintest.matchers.instanceOf
 import io.kotlintest.matchers.withClue
 import io.kotlintest.shouldBe
+import org.apache.pdfbox.io.MemoryUsageSetting
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
 import pl.beone.promena.communication.file.model.internal.fileCommunicationParameters
@@ -24,24 +25,46 @@ import kotlin.reflect.KClass
 
 private val testBytes = getResourceAsBytes("/text/test.pdf")
 
-internal fun memoryTest(parameters: Parameters, assertPagesNumber: Int, assertPagesText: List<String>) {
+internal fun createSettings(memoryUsageSetting: MemoryUsageSetting): PdfBoxPageExtractionTransformerSettings =
+    PdfBoxPageExtractionTransformerSettings(memoryUsageSetting, null)
+
+internal fun createDefaultParameters(relaxed: Boolean): PdfBoxPageExtractionTransformerDefaultParameters =
+    PdfBoxPageExtractionTransformerDefaultParameters(relaxed)
+
+internal fun memoryTest(
+    settings: PdfBoxPageExtractionTransformerSettings,
+    defaultParameters: PdfBoxPageExtractionTransformerDefaultParameters,
+    parameters: Parameters,
+    assertPagesNumber: Int = -1,
+    assertPagesText: List<String> = emptyList()
+) {
     test(
         testBytes.toMemoryData(),
         MemoryData::class,
         memoryCommunicationParameters(),
+        settings,
+        defaultParameters,
         parameters,
         assertPagesNumber,
         assertPagesText
     )
 }
 
-internal fun fileTest(parameters: Parameters, assertPagesNumber: Int, assertPagesText: List<String>) {
+internal fun fileTest(
+    settings: PdfBoxPageExtractionTransformerSettings,
+    defaultParameters: PdfBoxPageExtractionTransformerDefaultParameters,
+    parameters: Parameters,
+    assertPagesNumber: Int = -1,
+    assertPagesText: List<String> = emptyList()
+) {
     val directory = createTempDir()
 
     test(
         testBytes.inputStream().toFileData(directory),
         FileData::class,
         fileCommunicationParameters(directory),
+        settings,
+        defaultParameters,
         parameters,
         assertPagesNumber,
         assertPagesText
@@ -52,11 +75,13 @@ private fun test(
     data: Data,
     dataClass: KClass<*>,
     communicationParameters: CommunicationParameters,
+    settings: PdfBoxPageExtractionTransformerSettings,
+    defaultParameters: PdfBoxPageExtractionTransformerDefaultParameters,
     parameters: Parameters,
     assertPagesNumber: Int,
     assertPagesText: List<String>
 ) {
-    PdfBoxPageExtractionTransformer(communicationParameters)
+    PdfBoxPageExtractionTransformer(settings, defaultParameters, communicationParameters)
         .transform(singleDataDescriptor(data, APPLICATION_PDF, emptyMetadata()), APPLICATION_PDF, parameters).let { transformedDataDescriptor ->
             withClue("Transformed data should contain only <1> element") { transformedDataDescriptor.descriptors shouldHaveSize 1 }
 
