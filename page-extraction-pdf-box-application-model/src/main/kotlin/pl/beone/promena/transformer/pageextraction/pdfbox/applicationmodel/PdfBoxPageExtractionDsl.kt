@@ -3,7 +3,6 @@
 package pl.beone.promena.transformer.pageextraction.pdfbox.applicationmodel
 
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaType
-import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.APPLICATION_PDF
 import pl.beone.promena.transformer.contract.model.Parameters
 import pl.beone.promena.transformer.contract.transformation.Transformation
