@@ -21,15 +21,16 @@ import pl.beone.promena.transformer.internal.model.data.toMemoryData
 import pl.beone.promena.transformer.internal.model.metadata.emptyMetadata
 import pl.beone.promena.transformer.pageextraction.pdfbox.extension.toPDDocument
 import pl.beone.promena.transformer.pageextraction.pdfbox.util.getResourceAsBytes
+import java.time.Duration
 import kotlin.reflect.KClass
 
 private val testBytes = getResourceAsBytes("/text/test.pdf")
 
 internal fun createSettings(memoryUsageSetting: MemoryUsageSetting): PdfBoxPageExtractionTransformerSettings =
-    PdfBoxPageExtractionTransformerSettings(memoryUsageSetting, null)
+    PdfBoxPageExtractionTransformerSettings(memoryUsageSetting = memoryUsageSetting, fallbackMemoryUsageSetting = null)
 
-internal fun createDefaultParameters(relaxed: Boolean): PdfBoxPageExtractionTransformerDefaultParameters =
-    PdfBoxPageExtractionTransformerDefaultParameters(relaxed)
+internal fun createDefaultParameters(relaxed: Boolean, timeout: Duration? = null): PdfBoxPageExtractionTransformerDefaultParameters =
+    PdfBoxPageExtractionTransformerDefaultParameters(timeout = timeout, relaxed = relaxed)
 
 internal fun memoryTest(
     settings: PdfBoxPageExtractionTransformerSettings,

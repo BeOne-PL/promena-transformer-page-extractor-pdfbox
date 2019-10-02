@@ -18,6 +18,8 @@ import pl.beone.promena.transformer.pageextraction.pdfbox.applicationmodel.getRe
 import pl.beone.promena.transformer.pageextraction.pdfbox.extension.getInputStream
 import pl.beone.promena.transformer.pageextraction.pdfbox.extension.toPDDocument
 import java.io.OutputStream
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 internal abstract class AbstractTransformer(
     private val settings: PdfBoxPageExtractionTransformerSettings,
@@ -35,7 +37,14 @@ internal abstract class AbstractTransformer(
     fun transform(singleDataDescriptor: DataDescriptor.Single, targetMediaType: MediaType, parameters: Parameters): TransformedDataDescriptor.Single {
         val (data, _, metadata) = singleDataDescriptor
 
-        process(data, parameters)
+        val timeout = parameters.getTimeoutOrNull() ?: defaultParameters.timeout
+        if (timeout != null) {
+            Executors.newSingleThreadExecutor()
+                .submit { process(data, parameters) }
+                .get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+        } else {
+            process(data, parameters)
+        }
 
         return singleTransformedDataDescriptor(createData(), metadata)
     }
