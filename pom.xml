@@ -5,32 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.beone.promena.transformer</groupId>
-    <artifactId>page-extraction-pdf-box-root</artifactId>
+    <artifactId>page-extractor-pdfbox-root</artifactId>
     <version>1.0.0</version>
 
-    <repositories>
-        <repository>
-            <id>beone-releases</id>
-            <url>http://nexus.office.beone.pl/repository/releases</url>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>beone-releases</id>
-            <url>http://nexus.office.beone.pl/repository/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>beone-snapshots</id>
-            <url>http://nexus.office.beone.pl/repository/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <name>[TRANSFORMER] Page extractor - PDFBox</name>
 
     <modules>
-        <module>page-extraction-pdf-box-application-model</module>
-        <module>page-extraction-pdf-box</module>
-        <module>page-extraction-pdf-box-example</module>
-        <module>page-extraction-pdf-box-configuration</module>
+        <module>application-model</module>
+        <module>implementation</module>
+        <module>example</module>
+        <module>configuration</module>
     </modules>
     <packaging>pom</packaging>
 
