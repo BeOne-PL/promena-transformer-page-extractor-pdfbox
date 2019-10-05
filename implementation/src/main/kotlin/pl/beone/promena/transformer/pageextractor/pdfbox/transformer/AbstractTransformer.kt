@@ -5,7 +5,6 @@ import org.apache.pdfbox.io.MemoryUsageSetting
 import org.apache.pdfbox.multipdf.PDFMergerUtility
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
-import pl.beone.promena.transformer.applicationmodel.mediatype.MediaType
 import pl.beone.promena.transformer.contract.data.DataDescriptor
 import pl.beone.promena.transformer.contract.data.TransformedDataDescriptor
 import pl.beone.promena.transformer.contract.data.singleTransformedDataDescriptor
@@ -34,7 +33,7 @@ internal abstract class AbstractTransformer(
 
     protected abstract fun createData(): Data
 
-    fun transform(singleDataDescriptor: DataDescriptor.Single, targetMediaType: MediaType, parameters: Parameters): TransformedDataDescriptor.Single {
+    fun transform(singleDataDescriptor: DataDescriptor.Single, parameters: Parameters): TransformedDataDescriptor.Single {
         val (data, _, metadata) = singleDataDescriptor
 
         val timeout = parameters.getTimeoutOrNull() ?: defaultParameters.timeout

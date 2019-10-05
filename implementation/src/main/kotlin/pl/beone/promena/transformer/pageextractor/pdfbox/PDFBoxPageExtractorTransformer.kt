@@ -21,7 +21,7 @@ class PDFBoxPageExtractorTransformer(
 
     override fun transform(dataDescriptor: DataDescriptor, targetMediaType: MediaType, parameters: Parameters): TransformedDataDescriptor =
         dataDescriptor.descriptors
-            .map { determineTransformer().transform(it, targetMediaType, parameters) }
+            .map { determineTransformer().transform(it, parameters) }
             .toTransformedDataDescriptor()
 
     private fun determineTransformer(): AbstractTransformer =
