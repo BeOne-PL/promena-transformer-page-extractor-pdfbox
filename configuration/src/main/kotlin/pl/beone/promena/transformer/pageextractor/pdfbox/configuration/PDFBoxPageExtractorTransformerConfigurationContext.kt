@@ -4,9 +4,9 @@ import org.apache.pdfbox.io.MemoryUsageSetting
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
-import pl.beone.promena.configuration.extension.getNotBlankProperty
-import pl.beone.promena.configuration.extension.getRequiredNotBlankProperty
-import pl.beone.promena.configuration.extension.toDuration
+import pl.beone.promena.transformer.pageextractor.pdfbox.configuration.extension.getNotBlankProperty
+import pl.beone.promena.transformer.pageextractor.pdfbox.configuration.extension.getRequiredNotBlankProperty
+import pl.beone.promena.transformer.pageextractor.pdfbox.configuration.extension.toDuration
 import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
 import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
 

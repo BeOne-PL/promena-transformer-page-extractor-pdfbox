@@ -1,4 +1,4 @@
-package pl.beone.promena.configuration.extension
+package pl.beone.promena.transformer.pageextractor.pdfbox.configuration.extension
 
 import org.joda.time.format.PeriodFormatterBuilder
 import java.time.Duration
