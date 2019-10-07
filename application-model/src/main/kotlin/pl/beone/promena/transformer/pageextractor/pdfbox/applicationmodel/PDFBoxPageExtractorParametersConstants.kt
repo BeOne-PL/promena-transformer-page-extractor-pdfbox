@@ -6,11 +6,13 @@ object PDFBoxPageExtractorParametersConstants {
 
     object Pages {
         const val NAME = "pages"
+        @JvmField
         val CLASS = getClazz<List<Int>>()
     }
 
     object Relaxed {
         const val NAME = "relaxed"
+        @JvmField
         val CLASS = Boolean::class.java
     }
 }

@@ -11,6 +11,7 @@ import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBox
 
 object PDFBoxPageExtractorSupport {
 
+    @JvmStatic
     fun isSupported(dataDescriptor: DataDescriptor, targetMediaType: MediaType, parameters: Parameters) {
         dataDescriptor.descriptors.forEach { (_, mediaType) -> MediaTypeSupport.isSupported(mediaType, targetMediaType) }
         ParametersSupport.isSupported(parameters)
@@ -21,6 +22,7 @@ object PDFBoxPageExtractorSupport {
             APPLICATION_PDF to APPLICATION_PDF
         )
 
+        @JvmStatic
         fun isSupported(mediaType: MediaType, targetMediaType: MediaType) {
             if (!supportedMediaType.contains(mediaType to targetMediaType)) {
                 throw TransformationNotSupportedException.unsupportedMediaType(mediaType, targetMediaType)
@@ -29,6 +31,7 @@ object PDFBoxPageExtractorSupport {
     }
 
     object ParametersSupport {
+        @JvmStatic
         fun isSupported(parameters: Parameters) {
             parameters.validate(Pages.NAME, Pages.CLASS, true)
             parameters.validatePagesParameter()
