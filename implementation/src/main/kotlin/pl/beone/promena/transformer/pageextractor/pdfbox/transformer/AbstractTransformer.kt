@@ -8,8 +8,8 @@ import org.apache.pdfbox.pdmodel.PDPage
 import pl.beone.promena.transformer.contract.data.DataDescriptor
 import pl.beone.promena.transformer.contract.data.TransformedDataDescriptor
 import pl.beone.promena.transformer.contract.data.singleTransformedDataDescriptor
-import pl.beone.promena.transformer.contract.model.Data
 import pl.beone.promena.transformer.contract.model.Parameters
+import pl.beone.promena.transformer.contract.model.data.Data
 import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
 import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.getPages
