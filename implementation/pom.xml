@@ -32,6 +32,11 @@
         </dependency>
 
         <dependency>
+            <groupId>pl.beone.promena.base</groupId>
+            <artifactId>promena-transformer-util</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>pl.beone.promena.transformer</groupId>
             <artifactId>page-extractor-pdfbox-application-model</artifactId>
             <version>${page-extractor-pdfbox.version}</version>

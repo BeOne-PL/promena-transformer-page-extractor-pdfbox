@@ -1,5 +1,6 @@
 package pl.beone.promena.transformer.pageextractor.pdfbox.processor
 
+import kotlinx.coroutines.asCoroutineDispatcher
 import mu.KotlinLogging
 import org.apache.pdfbox.io.MemoryUsageSetting
 import org.apache.pdfbox.multipdf.PDFMergerUtility
@@ -17,9 +18,9 @@ import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.getPag
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.getRelaxedOrDefault
 import pl.beone.promena.transformer.pageextractor.pdfbox.extension.getInputStream
 import pl.beone.promena.transformer.pageextractor.pdfbox.extension.toPDDocument
+import pl.beone.promena.transformer.util.execute
 import java.io.OutputStream
 import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 internal class Processor(
     private val settings: PDFBoxPageExtractorTransformerSettings,
@@ -30,6 +31,8 @@ internal class Processor(
         private val logger = KotlinLogging.logger {}
     }
 
+    private val executionDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+
     fun process(
         singleDataDescriptor: DataDescriptor.Single,
         parameters: Parameters,
@@ -37,12 +40,7 @@ internal class Processor(
     ): TransformedDataDescriptor.Single {
         val (data, _, metadata) = singleDataDescriptor
 
-        val timeout = parameters.getTimeoutOrNull() ?: defaultParameters.timeout
-        if (timeout != null) {
-            Executors.newSingleThreadExecutor()
-                .submit { process(data, parameters, transformedWritableData.getOutputStream()) }
-                .get(timeout.toMillis(), TimeUnit.MILLISECONDS)
-        } else {
+        execute(parameters.getTimeoutOrNull() ?: defaultParameters.timeout, executionDispatcher) {
             process(data, parameters, transformedWritableData.getOutputStream())
         }
 
