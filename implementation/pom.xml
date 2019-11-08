@@ -18,9 +18,6 @@
     <properties>
         <page-extractor-pdfbox.version>1.0.0</page-extractor-pdfbox.version>
 
-        <communication.memory.model.version>1.0.0</communication.memory.model.version>
-        <promena-communication-file-model.version>1.0.0</promena-communication-file-model.version>
-
         <pdfbox.version>2.0.16</pdfbox.version>
     </properties>
 
@@ -41,14 +38,8 @@
         </dependency>
 
         <dependency>
-            <groupId>pl.beone.promena.communication.memory.model</groupId>
-            <artifactId>promena-communication-memory-model-internal</artifactId>
-            <version>${communication.memory.model.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>pl.beone.promena.communication.file.model</groupId>
-            <artifactId>promena-communication-file-model-internal</artifactId>
-            <version>${promena-communication-file-model.version}</version>
+            <groupId>io.github.microutils</groupId>
+            <artifactId>kotlin-logging</artifactId>
         </dependency>
 
         <dependency>

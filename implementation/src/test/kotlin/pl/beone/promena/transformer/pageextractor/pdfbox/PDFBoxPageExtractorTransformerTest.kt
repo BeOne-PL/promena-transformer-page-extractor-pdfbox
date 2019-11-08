@@ -16,7 +16,7 @@ class PDFBoxPageExtractorTransformerTest {
 
     @Test
     fun transform_relaxedAndMainMemoryUsageSetting_2and4Pages() {
-        memoryTest(
+        test(
             PDFBoxPageExtractorTransformerSettings(),
             PDFBoxPageExtractorTransformerDefaultParameters(),
             pdfBoxPageExtractorParameters(pages = listOf(2, 4)),
@@ -27,7 +27,7 @@ class PDFBoxPageExtractorTransformerTest {
 
     @Test
     fun transform_relaxedAndMainMemoryUsageSetting_1PageAndPageOutOfRange() {
-        memoryTest(
+        test(
             PDFBoxPageExtractorTransformerSettings(),
             PDFBoxPageExtractorTransformerDefaultParameters(),
             pdfBoxPageExtractorParameters(pages = listOf(1, 999)),
@@ -41,7 +41,7 @@ class PDFBoxPageExtractorTransformerTest {
     @Test
     fun transform_notRelaxedAndMainMemoryUsageSetting_1PageAndPageOutOfRange_shouldThrowIllegalArgumentException() {
         shouldThrow<IllegalArgumentException> {
-            memoryTest(
+            test(
                 PDFBoxPageExtractorTransformerSettings(),
                 PDFBoxPageExtractorTransformerDefaultParameters(relaxed = false),
                 pdfBoxPageExtractorParameters(pages = listOf(1, 999))
@@ -53,7 +53,7 @@ class PDFBoxPageExtractorTransformerTest {
 
     @Test
     fun transform_relaxedAndTempFileMemoryUsageSetting_1Page() {
-        memoryTest(
+        test(
             PDFBoxPageExtractorTransformerSettings(memoryUsageSetting = MemoryUsageSetting.setupTempFileOnly()),
             PDFBoxPageExtractorTransformerDefaultParameters(),
             pdfBoxPageExtractorParameters(pages = listOf(1)),
@@ -67,7 +67,7 @@ class PDFBoxPageExtractorTransformerTest {
     @Test
     fun transform_zeroTimeout_shouldThrowTimeoutException() {
         shouldThrow<TimeoutException> {
-            memoryTest(
+            test(
                 PDFBoxPageExtractorTransformerSettings(memoryUsageSetting = MemoryUsageSetting.setupTempFileOnly()),
                 PDFBoxPageExtractorTransformerDefaultParameters(timeout = Duration.ZERO),
                 pdfBoxPageExtractorParameters(pages = listOf(1))
@@ -75,7 +75,7 @@ class PDFBoxPageExtractorTransformerTest {
         }
 
         shouldThrow<TimeoutException> {
-            memoryTest(
+            test(
                 PDFBoxPageExtractorTransformerSettings(),
                 PDFBoxPageExtractorTransformerDefaultParameters(),
                 pdfBoxPageExtractorParameters(pages = listOf(1)) addTimeout Duration.ZERO

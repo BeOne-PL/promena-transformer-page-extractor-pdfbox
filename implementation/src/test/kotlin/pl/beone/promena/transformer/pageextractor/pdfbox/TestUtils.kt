@@ -1,86 +1,41 @@
 package pl.beone.promena.transformer.pageextractor.pdfbox
 
 import io.kotlintest.matchers.collections.shouldHaveSize
-import io.kotlintest.matchers.instanceOf
 import io.kotlintest.matchers.withClue
 import io.kotlintest.shouldBe
+import io.mockk.mockk
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
-import pl.beone.promena.communication.file.model.internal.fileCommunicationParameters
-import pl.beone.promena.communication.memory.model.internal.memoryCommunicationParameters
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.APPLICATION_PDF
 import pl.beone.promena.transformer.contract.communication.CommunicationParameters
+import pl.beone.promena.transformer.contract.communication.CommunicationWritableDataCreator
 import pl.beone.promena.transformer.contract.data.singleDataDescriptor
 import pl.beone.promena.transformer.contract.model.Parameters
-import pl.beone.promena.transformer.contract.model.data.Data
-import pl.beone.promena.transformer.internal.model.data.file.FileData
-import pl.beone.promena.transformer.internal.model.data.file.toFileData
-import pl.beone.promena.transformer.internal.model.data.memory.MemoryData
+import pl.beone.promena.transformer.contract.model.data.WritableData
+import pl.beone.promena.transformer.internal.model.data.memory.emptyMemoryWritableData
 import pl.beone.promena.transformer.internal.model.data.memory.toMemoryData
 import pl.beone.promena.transformer.internal.model.metadata.emptyMetadata
 import pl.beone.promena.transformer.pageextractor.pdfbox.extension.toPDDocument
 import pl.beone.promena.transformer.pageextractor.pdfbox.util.getResourceAsBytes
-import kotlin.reflect.KClass
 
-private val testBytes = getResourceAsBytes("/text/test.pdf")
+private object MemoryCommunicationWritableDataCreator : CommunicationWritableDataCreator {
+    override fun create(communicationParameters: CommunicationParameters): WritableData = emptyMemoryWritableData()
+}
 
-internal fun memoryTest(
+private val data = getResourceAsBytes("/text/test.pdf").toMemoryData()
+
+internal fun test(
     settings: PDFBoxPageExtractorTransformerSettings,
     defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters,
     parameters: Parameters,
     assertPagesNumber: Int = -1,
     assertPagesText: List<String> = emptyList()
 ) {
-    test(
-        testBytes.toMemoryData(),
-        MemoryData::class,
-        memoryCommunicationParameters(),
-        settings,
-        defaultParameters,
-        parameters,
-        assertPagesNumber,
-        assertPagesText
-    )
-}
-
-internal fun fileTest(
-    settings: PDFBoxPageExtractorTransformerSettings,
-    defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters,
-    parameters: Parameters,
-    assertPagesNumber: Int = -1,
-    assertPagesText: List<String> = emptyList()
-) {
-    val directory = createTempDir()
-
-    test(
-        testBytes.inputStream().toFileData(directory),
-        FileData::class,
-        fileCommunicationParameters(directory),
-        settings,
-        defaultParameters,
-        parameters,
-        assertPagesNumber,
-        assertPagesText
-    )
-}
-
-private fun test(
-    data: Data,
-    dataClass: KClass<*>,
-    communicationParameters: CommunicationParameters,
-    settings: PDFBoxPageExtractorTransformerSettings,
-    defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters,
-    parameters: Parameters,
-    assertPagesNumber: Int,
-    assertPagesText: List<String>
-) {
-    PDFBoxPageExtractorTransformer(settings, defaultParameters, communicationParameters)
+    PDFBoxPageExtractorTransformer(settings, defaultParameters, mockk(), MemoryCommunicationWritableDataCreator)
         .transform(singleDataDescriptor(data, APPLICATION_PDF, emptyMetadata()), APPLICATION_PDF, parameters).let { transformedDataDescriptor ->
             withClue("Transformed data should contain only <1> element") { transformedDataDescriptor.descriptors shouldHaveSize 1 }
 
             transformedDataDescriptor.descriptors[0].let {
-                withClue("Transformed data should be instance of <$dataClass>") { it.data shouldBe instanceOf(dataClass) }
-
                 val document = PDDocument.load(it.data.getInputStream())
                 withClue("Data should contain <$assertPagesNumber> number of pages") { document.numberOfPages shouldBe assertPagesNumber }
                 withClue("Data should contain <$assertPagesText> text on pages") { document.readPages() shouldBe assertPagesText }

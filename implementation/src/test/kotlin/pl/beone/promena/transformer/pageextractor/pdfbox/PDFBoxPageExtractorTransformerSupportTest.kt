@@ -21,7 +21,7 @@ class PDFBoxPageExtractorTransformerSupportTest {
         mockkStatic(PDFBoxPageExtractorSupport::class)
         every { PDFBoxPageExtractorSupport.isSupported(dataDescriptor, targetMediaType, parameters) } just Runs
 
-        PDFBoxPageExtractorTransformer(mockk(), mockk(), mockk())
+        PDFBoxPageExtractorTransformer(mockk(), mockk(), mockk(), mockk())
             .isSupported(dataDescriptor, targetMediaType, parameters)
 
         verify(exactly = 1) { PDFBoxPageExtractorSupport.isSupported(dataDescriptor, targetMediaType, parameters) }

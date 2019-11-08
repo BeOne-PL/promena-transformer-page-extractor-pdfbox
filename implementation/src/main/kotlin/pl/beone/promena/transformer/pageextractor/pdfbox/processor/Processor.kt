@@ -1,4 +1,4 @@
-package pl.beone.promena.transformer.pageextractor.pdfbox.transformer
+package pl.beone.promena.transformer.pageextractor.pdfbox.processor
 
 import mu.KotlinLogging
 import org.apache.pdfbox.io.MemoryUsageSetting
@@ -10,6 +10,7 @@ import pl.beone.promena.transformer.contract.data.TransformedDataDescriptor
 import pl.beone.promena.transformer.contract.data.singleTransformedDataDescriptor
 import pl.beone.promena.transformer.contract.model.Parameters
 import pl.beone.promena.transformer.contract.model.data.Data
+import pl.beone.promena.transformer.contract.model.data.WritableData
 import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
 import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.getPages
@@ -20,7 +21,7 @@ import java.io.OutputStream
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-internal abstract class AbstractTransformer(
+internal class Processor(
     private val settings: PDFBoxPageExtractorTransformerSettings,
     private val defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters
 ) {
@@ -29,33 +30,33 @@ internal abstract class AbstractTransformer(
         private val logger = KotlinLogging.logger {}
     }
 
-    protected abstract fun getOutputStream(): OutputStream
-
-    protected abstract fun createData(): Data
-
-    fun transform(singleDataDescriptor: DataDescriptor.Single, parameters: Parameters): TransformedDataDescriptor.Single {
+    fun process(
+        singleDataDescriptor: DataDescriptor.Single,
+        parameters: Parameters,
+        transformedWritableData: WritableData
+    ): TransformedDataDescriptor.Single {
         val (data, _, metadata) = singleDataDescriptor
 
         val timeout = parameters.getTimeoutOrNull() ?: defaultParameters.timeout
         if (timeout != null) {
             Executors.newSingleThreadExecutor()
-                .submit { process(data, parameters) }
+                .submit { process(data, parameters, transformedWritableData.getOutputStream()) }
                 .get(timeout.toMillis(), TimeUnit.MILLISECONDS)
         } else {
-            process(data, parameters)
+            process(data, parameters, transformedWritableData.getOutputStream())
         }
 
-        return singleTransformedDataDescriptor(createData(), metadata)
+        return singleTransformedDataDescriptor(transformedWritableData, metadata)
     }
 
-    private fun process(data: Data, parameters: Parameters) {
+    private fun process(data: Data, parameters: Parameters, outputStream: OutputStream) {
         val indexPages = parameters.getPages()
             .map { it - 1 } // because pages are indexed from 0
 
         val relaxed = parameters.getRelaxedOrDefault(defaultParameters.relaxed)
 
         PDDocument.load(data.getInputStream())
-            .use { pdDocument -> mergePages(getPagesRespectingRelaxedParameter(pdDocument, indexPages, relaxed)) }
+            .use { pdDocument -> mergePages(getPagesRespectingRelaxedParameter(pdDocument, indexPages, relaxed), outputStream) }
     }
 
     private fun getPagesRespectingRelaxedParameter(pdDocument: PDDocument, indexPages: List<Int>, relaxed: Boolean): List<PDPage> =
@@ -72,23 +73,23 @@ internal abstract class AbstractTransformer(
             }
         }
 
-    private fun mergePages(pages: List<PDPage>) {
+    private fun mergePages(pages: List<PDPage>, outputStream: OutputStream) {
         try {
-            mergePages(pages, settings.memoryUsageSetting)
+            mergePages(pages, settings.memoryUsageSetting, outputStream)
         } catch (e: Exception) {
             val fallbackMemoryUsageSetting = settings.fallbackMemoryUsageSetting
             if (fallbackMemoryUsageSetting != null) {
                 logger.warn(e) { "Couldn't merge pages. Using <${fallbackMemoryUsageSetting::class.java.canonicalName}> as fallback..." }
-                mergePages(pages, fallbackMemoryUsageSetting)
+                mergePages(pages, fallbackMemoryUsageSetting, outputStream)
             } else {
                 throw e
             }
         }
     }
 
-    private fun mergePages(pages: List<PDPage>, memoryUsageSetting: MemoryUsageSetting) {
+    private fun mergePages(pages: List<PDPage>, memoryUsageSetting: MemoryUsageSetting, outputStream: OutputStream) {
         PDFMergerUtility()
-            .apply { destinationStream = getOutputStream() }
+            .apply { destinationStream = outputStream }
             .also { merger -> merger.addSources(pages.map { pdPage -> pdPage.toPDDocument().getInputStream() }) }
             .also { merger -> merger.mergeDocuments(memoryUsageSetting) }
     }
