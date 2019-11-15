@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test
 import pl.beone.promena.transformer.applicationmodel.exception.transformer.TransformationNotSupportedException
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.APPLICATION_PDF
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.TEXT_PLAIN
-import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorSupport.MediaTypeSupport.isSupported
+import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorSupport.MediaTypeSupport.isSupported
 
-class PDFBoxPageExtractorMediaTypeSupportTest {
+class PdfBoxPageExtractorMediaTypeSupportTest {
 
     @Test
     fun isSupported() {

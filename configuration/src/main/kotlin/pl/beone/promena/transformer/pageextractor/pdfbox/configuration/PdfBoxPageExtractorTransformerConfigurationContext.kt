@@ -4,29 +4,29 @@ import org.apache.pdfbox.io.MemoryUsageSetting
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerDefaultParameters
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerSettings
 import pl.beone.promena.transformer.pageextractor.pdfbox.configuration.extension.getNotBlankProperty
 import pl.beone.promena.transformer.pageextractor.pdfbox.configuration.extension.getRequiredNotBlankProperty
 import pl.beone.promena.transformer.pageextractor.pdfbox.configuration.extension.toDuration
 
 @Configuration
-class PDFBoxPageExtractorTransformerConfigurationContext {
+class PdfBoxPageExtractorTransformerConfigurationContext {
 
     companion object {
         private const val PROPERTY_PREFIX = "transformer.pl.beone.promena.transformer.pageextractor.pdfbox"
     }
 
     @Bean
-    fun pdfBoxPageExtractorTransformerSettings(environment: Environment): PDFBoxPageExtractorTransformerSettings =
-        PDFBoxPageExtractorTransformerSettings(
+    fun pdfBoxPageExtractorTransformerSettings(environment: Environment): PdfBoxPageExtractorTransformerSettings =
+        PdfBoxPageExtractorTransformerSettings(
             environment.getRequiredNotBlankProperty("$PROPERTY_PREFIX.settings.memoryUsageSetting").let(::createUsingStaticMethod),
             environment.getNotBlankProperty("$PROPERTY_PREFIX.settings.fallbackMemoryUsageSetting")?.let(::createUsingStaticMethod)
         )
 
     @Bean
-    fun pdfBoxPageExtractorTransformerDefaultParameters(environment: Environment): PDFBoxPageExtractorTransformerDefaultParameters =
-        PDFBoxPageExtractorTransformerDefaultParameters(
+    fun pdfBoxPageExtractorTransformerDefaultParameters(environment: Environment): PdfBoxPageExtractorTransformerDefaultParameters =
+        PdfBoxPageExtractorTransformerDefaultParameters(
             environment.getRequiredNotBlankProperty("$PROPERTY_PREFIX.default.parameters.relaxed").toBoolean(),
             environment.getNotBlankProperty("$PROPERTY_PREFIX.default.parameters.timeout")?.toDuration()
         )

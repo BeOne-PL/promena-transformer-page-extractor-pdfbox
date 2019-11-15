@@ -16,26 +16,26 @@ import pl.beone.promena.transformer.contract.model.data.WritableData
 import pl.beone.promena.transformer.internal.model.data.memory.emptyMemoryWritableData
 import pl.beone.promena.transformer.internal.model.data.memory.toMemoryData
 import pl.beone.promena.transformer.internal.model.metadata.emptyMetadata
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformer
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformer
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerDefaultParameters
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerSettings
 import pl.beone.promena.transformer.pageextractor.pdfbox.extension.toPDDocument
 
 private object MemoryCommunicationWritableDataCreator : CommunicationWritableDataCreator {
     override fun create(communicationParameters: CommunicationParameters): WritableData = emptyMemoryWritableData()
 }
 
-internal fun createPDFBoxPageExtractorTransformer(
-    settings: PDFBoxPageExtractorTransformerSettings = PDFBoxPageExtractorTransformerSettings(
+internal fun createPdfBoxPageExtractorTransformer(
+    settings: PdfBoxPageExtractorTransformerSettings = PdfBoxPageExtractorTransformerSettings(
         MemoryUsageSetting.setupMainMemoryOnly()
     ),
-    defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters = PDFBoxPageExtractorTransformerDefaultParameters(
+    defaultParameters: PdfBoxPageExtractorTransformerDefaultParameters = PdfBoxPageExtractorTransformerDefaultParameters(
         true
     ),
     communicationParameters: CommunicationParameters = mockk(),
     communicationWritableDataCreator: CommunicationWritableDataCreator = MemoryCommunicationWritableDataCreator
-): PDFBoxPageExtractorTransformer =
-    PDFBoxPageExtractorTransformer(
+): PdfBoxPageExtractorTransformer =
+    PdfBoxPageExtractorTransformer(
         settings,
         defaultParameters,
         communicationParameters,
@@ -48,7 +48,7 @@ internal fun test(
     parameters: Parameters,
     assertPagesNumber: Int = -1,
     assertPagesText: List<String> = emptyList(),
-    transformer: PDFBoxPageExtractorTransformer = createPDFBoxPageExtractorTransformer()
+    transformer: PdfBoxPageExtractorTransformer = createPdfBoxPageExtractorTransformer()
 ) {
     transformer
         .transform(singleDataDescriptor(data, APPLICATION_PDF, emptyMetadata()), APPLICATION_PDF, parameters).let { transformedDataDescriptor ->

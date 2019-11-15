@@ -12,8 +12,8 @@ import pl.beone.promena.transformer.contract.data.singleTransformedDataDescripto
 import pl.beone.promena.transformer.contract.model.Parameters
 import pl.beone.promena.transformer.contract.model.data.Data
 import pl.beone.promena.transformer.contract.model.data.WritableData
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerDefaultParameters
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerSettings
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.getPages
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.getRelaxedOrDefault
 import pl.beone.promena.transformer.pageextractor.pdfbox.extension.getInputStream
@@ -23,8 +23,8 @@ import java.io.OutputStream
 import java.util.concurrent.Executors
 
 internal class Processor(
-    private val settings: PDFBoxPageExtractorTransformerSettings,
-    private val defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters
+    private val settings: PdfBoxPageExtractorTransformerSettings,
+    private val defaultParameters: PdfBoxPageExtractorTransformerDefaultParameters
 ) {
 
     companion object {

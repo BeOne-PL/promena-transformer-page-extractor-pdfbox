@@ -4,7 +4,7 @@ import io.kotlintest.shouldBe
 import io.kotlintest.shouldThrow
 import org.junit.jupiter.api.Test
 
-class PDFBoxPageExtractorParametersDslTest {
+class PdfBoxPageExtractorParametersDslKtTest {
 
     @Test
     fun `pdfBoxPageExtractionParameters _ default parameters`() {

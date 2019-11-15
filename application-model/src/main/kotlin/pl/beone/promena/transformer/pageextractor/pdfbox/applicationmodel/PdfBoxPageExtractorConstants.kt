@@ -2,7 +2,7 @@ package pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel
 
 import pl.beone.promena.transformer.contract.transformer.transformerId
 
-object PDFBoxPageExtractorConstants {
+object PdfBoxPageExtractorConstants {
 
     const val TRANSFORMER_NAME = "page extractor"
 

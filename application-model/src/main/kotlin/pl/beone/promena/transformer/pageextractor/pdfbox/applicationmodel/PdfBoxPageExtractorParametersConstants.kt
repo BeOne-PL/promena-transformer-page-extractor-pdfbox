@@ -2,7 +2,7 @@ package pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel
 
 import pl.beone.lib.typeconverter.internal.getClazz
 
-object PDFBoxPageExtractorParametersConstants {
+object PdfBoxPageExtractorParametersConstants {
 
     object Pages {
         const val NAME = "pages"

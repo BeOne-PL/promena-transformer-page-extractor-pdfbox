@@ -8,12 +8,12 @@ import pl.beone.promena.transformer.contract.data.DataDescriptor
 import pl.beone.promena.transformer.contract.data.TransformedDataDescriptor
 import pl.beone.promena.transformer.contract.data.toTransformedDataDescriptor
 import pl.beone.promena.transformer.contract.model.Parameters
-import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorSupport
+import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorSupport
 import pl.beone.promena.transformer.pageextractor.pdfbox.processor.Processor
 
-class PDFBoxPageExtractorTransformer(
-    settings: PDFBoxPageExtractorTransformerSettings,
-    defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters,
+class PdfBoxPageExtractorTransformer(
+    settings: PdfBoxPageExtractorTransformerSettings,
+    defaultParameters: PdfBoxPageExtractorTransformerDefaultParameters,
     private val communicationParameters: CommunicationParameters,
     private val communicationWritableDataCreator: CommunicationWritableDataCreator
 ) : Transformer {
@@ -26,6 +26,6 @@ class PDFBoxPageExtractorTransformer(
             .toTransformedDataDescriptor()
 
     override fun isSupported(dataDescriptor: DataDescriptor, targetMediaType: MediaType, parameters: Parameters) {
-        PDFBoxPageExtractorSupport.isSupported(dataDescriptor, targetMediaType, parameters)
+        PdfBoxPageExtractorSupport.isSupported(dataDescriptor, targetMediaType, parameters)
     }
 }

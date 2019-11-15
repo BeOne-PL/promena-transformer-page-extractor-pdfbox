@@ -3,9 +3,9 @@ package pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel
 import io.kotlintest.shouldBe
 import org.junit.jupiter.api.Test
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.APPLICATION_PDF
-import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorConstants.TRANSFORMER_ID
+import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorConstants.TRANSFORMER_ID
 
-class PDFBoxPageExtractorDslTest {
+class PdfBoxPageExtractorDslKtTest {
 
     @Test
     fun pdfBoxPageExtractorTransformation() {

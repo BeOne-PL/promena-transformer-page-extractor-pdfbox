@@ -5,10 +5,10 @@ import io.kotlintest.shouldNotThrow
 import io.kotlintest.shouldThrow
 import org.junit.jupiter.api.Test
 import pl.beone.promena.transformer.applicationmodel.exception.transformer.TransformationNotSupportedException
-import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorSupport.ParametersSupport.isSupported
+import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorSupport.ParametersSupport.isSupported
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.pdfBoxPageExtractorParameters
 
-class PDFBoxPageExtractorParametersSupportTest {
+class PdfBoxPageExtractorParametersSupportTest {
 
     @Test
     fun `isSupported _ default parameters`() {

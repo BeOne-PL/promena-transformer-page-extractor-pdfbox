@@ -1,4 +1,4 @@
-@file:JvmName("PDFBoxPageExtractorParametersDsl")
+@file:JvmName("PdfBoxPageExtractorParametersDsl")
 
 package pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel
 
@@ -7,8 +7,8 @@ import pl.beone.promena.transformer.internal.model.parameters.MapParameters
 import pl.beone.promena.transformer.internal.model.parameters.addIfNotNull
 import pl.beone.promena.transformer.internal.model.parameters.emptyParameters
 import pl.beone.promena.transformer.internal.model.parameters.plus
-import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorParametersConstants.Pages
-import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorParametersConstants.Relaxed
+import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorParametersConstants.Pages
+import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorParametersConstants.Relaxed
 
 fun pdfBoxPageExtractorParameters(pages: List<Int>, relaxed: Boolean? = null): MapParameters =
     emptyParameters() +

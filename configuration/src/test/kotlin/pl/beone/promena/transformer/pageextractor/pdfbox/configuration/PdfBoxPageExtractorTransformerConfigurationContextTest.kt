@@ -6,11 +6,11 @@ import org.junit.Test
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.mock.env.MockEnvironment
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerDefaultParameters
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerSettings
 import java.time.Duration
 
-class PDFBoxPageExtractorTransformerConfigurationContextTest {
+class PdfBoxPageExtractorTransformerConfigurationContextTest {
 
     @Test
     fun `setting context`() {
@@ -24,13 +24,13 @@ class PDFBoxPageExtractorTransformerConfigurationContextTest {
             )
         )
 
-        val applicationContext = createConfigApplicationContext(environment, PDFBoxPageExtractorTransformerConfigurationContext::class.java)
-        applicationContext.getBean(PDFBoxPageExtractorTransformerSettings::class.java).let {
+        val applicationContext = createConfigApplicationContext(environment, PdfBoxPageExtractorTransformerConfigurationContext::class.java)
+        applicationContext.getBean(PdfBoxPageExtractorTransformerSettings::class.java).let {
             it.memoryUsageSetting.useMainMemory() shouldBe true
             it.fallbackMemoryUsageSetting shouldNotBe null
             it.fallbackMemoryUsageSetting!!.useTempFile() shouldBe true
         }
-        applicationContext.getBean(PDFBoxPageExtractorTransformerDefaultParameters::class.java).let {
+        applicationContext.getBean(PdfBoxPageExtractorTransformerDefaultParameters::class.java).let {
             it.relaxed shouldBe true
             it.timeout shouldBe Duration.ofMinutes(5)
         }
@@ -48,12 +48,12 @@ class PDFBoxPageExtractorTransformerConfigurationContextTest {
             )
         )
 
-        val applicationContext = createConfigApplicationContext(environment, PDFBoxPageExtractorTransformerConfigurationContext::class.java)
-        applicationContext.getBean(PDFBoxPageExtractorTransformerSettings::class.java).let {
+        val applicationContext = createConfigApplicationContext(environment, PdfBoxPageExtractorTransformerConfigurationContext::class.java)
+        applicationContext.getBean(PdfBoxPageExtractorTransformerSettings::class.java).let {
             it.memoryUsageSetting.useMainMemory() shouldBe true
             it.fallbackMemoryUsageSetting shouldBe null
         }
-        applicationContext.getBean(PDFBoxPageExtractorTransformerDefaultParameters::class.java).let {
+        applicationContext.getBean(PdfBoxPageExtractorTransformerDefaultParameters::class.java).let {
             it.relaxed shouldBe true
             it.timeout shouldBe null
         }

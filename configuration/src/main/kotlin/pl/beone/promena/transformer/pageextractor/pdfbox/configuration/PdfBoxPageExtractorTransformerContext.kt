@@ -5,22 +5,22 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pl.beone.promena.transformer.contract.communication.CommunicationParameters
 import pl.beone.promena.transformer.contract.communication.CommunicationWritableDataCreator
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformer
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
-import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformer
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerDefaultParameters
+import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerSettings
 
 @Configuration
-class PDFBoxPageExtractorTransformerContext {
+class PdfBoxPageExtractorTransformerContext {
 
     @Bean
     fun pdfBoxPageExtractorTransformer(
-        settings: PDFBoxPageExtractorTransformerSettings,
-        defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters,
+        settings: PdfBoxPageExtractorTransformerSettings,
+        defaultParameters: PdfBoxPageExtractorTransformerDefaultParameters,
         @Qualifier("internalCommunicationParameters") communicationParameters: CommunicationParameters,
         @Qualifier("internalCommunicationWritableDataCreator") communicationWritableDataCreator: CommunicationWritableDataCreator
 
     ) =
-        PDFBoxPageExtractorTransformer(
+        PdfBoxPageExtractorTransformer(
             settings,
             defaultParameters,
             communicationParameters,

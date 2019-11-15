@@ -8,13 +8,13 @@ import org.junit.jupiter.api.extension.ExtendWith
 import pl.beone.lib.junit.jupiter.external.DockerExtension
 import pl.beone.promena.transformer.internal.model.parameters.addTimeout
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.pdfBoxPageExtractorParameters
-import pl.beone.promena.transformer.pageextractor.pdfbox.util.createPDFBoxPageExtractorTransformer
+import pl.beone.promena.transformer.pageextractor.pdfbox.util.createPdfBoxPageExtractorTransformer
 import pl.beone.promena.transformer.pageextractor.pdfbox.util.test
 import java.time.Duration
 import java.util.concurrent.TimeoutException
 
 @ExtendWith(DockerExtension::class)
-class PDFBoxPageExtractorTransformerTest {
+class PdfBoxPageExtractorTransformerTest {
 
     @Test
     fun transform_relaxedAndMainMemoryUsageSetting_2and4Pages() {
@@ -41,8 +41,8 @@ class PDFBoxPageExtractorTransformerTest {
         shouldThrow<IllegalArgumentException> {
             test(
                 pdfBoxPageExtractorParameters(pages = listOf(1, 999)),
-                transformer = createPDFBoxPageExtractorTransformer(
-                    defaultParameters = PDFBoxPageExtractorTransformerDefaultParameters(relaxed = false)
+                transformer = createPdfBoxPageExtractorTransformer(
+                    defaultParameters = PdfBoxPageExtractorTransformerDefaultParameters(relaxed = false)
                 )
             )
         }.message shouldBe "Document hasn't <999> pages"
@@ -56,8 +56,8 @@ class PDFBoxPageExtractorTransformerTest {
             pdfBoxPageExtractorParameters(pages = listOf(1)),
             1,
             listOf("Page 1"),
-            transformer = createPDFBoxPageExtractorTransformer(
-                settings = PDFBoxPageExtractorTransformerSettings(memoryUsageSetting = MemoryUsageSetting.setupTempFileOnly())
+            transformer = createPdfBoxPageExtractorTransformer(
+                settings = PdfBoxPageExtractorTransformerSettings(memoryUsageSetting = MemoryUsageSetting.setupTempFileOnly())
             )
         )
     }
@@ -69,9 +69,9 @@ class PDFBoxPageExtractorTransformerTest {
         shouldThrow<TimeoutException> {
             test(
                 pdfBoxPageExtractorParameters(pages = listOf(1)),
-                transformer = createPDFBoxPageExtractorTransformer(
-                    settings = PDFBoxPageExtractorTransformerSettings(memoryUsageSetting = MemoryUsageSetting.setupTempFileOnly()),
-                    defaultParameters = PDFBoxPageExtractorTransformerDefaultParameters(relaxed = true, timeout = Duration.ZERO)
+                transformer = createPdfBoxPageExtractorTransformer(
+                    settings = PdfBoxPageExtractorTransformerSettings(memoryUsageSetting = MemoryUsageSetting.setupTempFileOnly()),
+                    defaultParameters = PdfBoxPageExtractorTransformerDefaultParameters(relaxed = true, timeout = Duration.ZERO)
                 )
             )
         }

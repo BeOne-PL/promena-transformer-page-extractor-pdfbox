@@ -1,4 +1,4 @@
-@file:JvmName("PDFBoxPageExtractorDsl")
+@file:JvmName("PdfBoxPageExtractorDsl")
 
 package pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel
 
@@ -7,8 +7,8 @@ import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstant
 import pl.beone.promena.transformer.contract.model.Parameters
 import pl.beone.promena.transformer.contract.transformation.Transformation
 import pl.beone.promena.transformer.contract.transformation.singleTransformation
-import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorConstants.TRANSFORMER_ID
-import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorConstants.TRANSFORMER_NAME
+import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorConstants.TRANSFORMER_ID
+import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorConstants.TRANSFORMER_NAME
 
 fun pageExtractorTransformation(targetMediaType: MediaType, parameters: Parameters): Transformation.Single =
     singleTransformation(TRANSFORMER_NAME, targetMediaType, parameters)
