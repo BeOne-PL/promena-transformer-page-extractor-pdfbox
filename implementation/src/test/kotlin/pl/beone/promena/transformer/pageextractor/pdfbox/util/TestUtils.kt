@@ -1,9 +1,10 @@
-package pl.beone.promena.transformer.pageextractor.pdfbox
+package pl.beone.promena.transformer.pageextractor.pdfbox.util
 
 import io.kotlintest.matchers.collections.shouldHaveSize
 import io.kotlintest.matchers.withClue
 import io.kotlintest.shouldBe
 import io.mockk.mockk
+import org.apache.pdfbox.io.MemoryUsageSetting
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.APPLICATION_PDF
@@ -15,23 +16,41 @@ import pl.beone.promena.transformer.contract.model.data.WritableData
 import pl.beone.promena.transformer.internal.model.data.memory.emptyMemoryWritableData
 import pl.beone.promena.transformer.internal.model.data.memory.toMemoryData
 import pl.beone.promena.transformer.internal.model.metadata.emptyMetadata
+import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformer
+import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerDefaultParameters
+import pl.beone.promena.transformer.pageextractor.pdfbox.PDFBoxPageExtractorTransformerSettings
 import pl.beone.promena.transformer.pageextractor.pdfbox.extension.toPDDocument
-import pl.beone.promena.transformer.pageextractor.pdfbox.util.getResourceAsBytes
 
 private object MemoryCommunicationWritableDataCreator : CommunicationWritableDataCreator {
     override fun create(communicationParameters: CommunicationParameters): WritableData = emptyMemoryWritableData()
 }
 
+internal fun createPDFBoxPageExtractorTransformer(
+    settings: PDFBoxPageExtractorTransformerSettings = PDFBoxPageExtractorTransformerSettings(
+        MemoryUsageSetting.setupMainMemoryOnly()
+    ),
+    defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters = PDFBoxPageExtractorTransformerDefaultParameters(
+        true
+    ),
+    communicationParameters: CommunicationParameters = mockk(),
+    communicationWritableDataCreator: CommunicationWritableDataCreator = MemoryCommunicationWritableDataCreator
+): PDFBoxPageExtractorTransformer =
+    PDFBoxPageExtractorTransformer(
+        settings,
+        defaultParameters,
+        communicationParameters,
+        communicationWritableDataCreator
+    )
+
 private val data = getResourceAsBytes("/text/test.pdf").toMemoryData()
 
 internal fun test(
-    settings: PDFBoxPageExtractorTransformerSettings,
-    defaultParameters: PDFBoxPageExtractorTransformerDefaultParameters,
     parameters: Parameters,
     assertPagesNumber: Int = -1,
-    assertPagesText: List<String> = emptyList()
+    assertPagesText: List<String> = emptyList(),
+    transformer: PDFBoxPageExtractorTransformer = createPDFBoxPageExtractorTransformer()
 ) {
-    PDFBoxPageExtractorTransformer(settings, defaultParameters, mockk(), MemoryCommunicationWritableDataCreator)
+    transformer
         .transform(singleDataDescriptor(data, APPLICATION_PDF, emptyMetadata()), APPLICATION_PDF, parameters).let { transformedDataDescriptor ->
             withClue("Transformed data should contain only <1> element") { transformedDataDescriptor.descriptors shouldHaveSize 1 }
 

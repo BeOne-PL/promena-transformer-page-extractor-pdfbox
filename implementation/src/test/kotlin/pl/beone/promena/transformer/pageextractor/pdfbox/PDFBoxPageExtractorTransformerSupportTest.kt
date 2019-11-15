@@ -8,6 +8,7 @@ import pl.beone.promena.transformer.applicationmodel.mediatype.MediaType
 import pl.beone.promena.transformer.contract.data.DataDescriptor
 import pl.beone.promena.transformer.contract.model.Parameters
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PDFBoxPageExtractorSupport
+import pl.beone.promena.transformer.pageextractor.pdfbox.util.createPDFBoxPageExtractorTransformer
 
 @ExtendWith(DockerExtension::class)
 class PDFBoxPageExtractorTransformerSupportTest {
@@ -21,7 +22,7 @@ class PDFBoxPageExtractorTransformerSupportTest {
         mockkStatic(PDFBoxPageExtractorSupport::class)
         every { PDFBoxPageExtractorSupport.isSupported(dataDescriptor, targetMediaType, parameters) } just Runs
 
-        PDFBoxPageExtractorTransformer(mockk(), mockk(), mockk(), mockk())
+        createPDFBoxPageExtractorTransformer()
             .isSupported(dataDescriptor, targetMediaType, parameters)
 
         verify(exactly = 1) { PDFBoxPageExtractorSupport.isSupported(dataDescriptor, targetMediaType, parameters) }
