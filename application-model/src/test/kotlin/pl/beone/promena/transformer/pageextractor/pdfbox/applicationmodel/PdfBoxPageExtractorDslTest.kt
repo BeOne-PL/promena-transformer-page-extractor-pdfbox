@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Test
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.APPLICATION_PDF
 import pl.beone.promena.transformer.pageextractor.pdfbox.applicationmodel.PdfBoxPageExtractorConstants.TRANSFORMER_ID
 
-class PdfBoxPageExtractorDslKtTest {
+class PdfBoxPageExtractorDslTest {
 
     @Test
     fun pdfBoxPageExtractorTransformation() {
-        pdfBoxPageExtractorTransformation(pdfBoxPageExtractorParameters(pages = listOf(1, 2, 3))).let {
-            it.transformerId shouldBe TRANSFORMER_ID
-            it.targetMediaType shouldBe APPLICATION_PDF
-            it.parameters.getAll().size shouldBe 1
+        with(pdfBoxPageExtractorTransformation(pdfBoxPageExtractorParameters())) {
+            transformerId shouldBe TRANSFORMER_ID
+            targetMediaType shouldBe APPLICATION_PDF
+            parameters.getAll().size shouldBe 0
         }
     }
 }

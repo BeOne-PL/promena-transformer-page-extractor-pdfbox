@@ -27,7 +27,7 @@ class PdfBoxPageExtractorTransformerConfigurationContext {
     @Bean
     fun pdfBoxPageExtractorTransformerDefaultParameters(environment: Environment): PdfBoxPageExtractorTransformerDefaultParameters =
         PdfBoxPageExtractorTransformerDefaultParameters(
-            environment.getRequiredNotBlankProperty("$PROPERTY_PREFIX.default.parameters.relaxed").toBoolean(),
+            environment.getRequiredNotBlankProperty("$PROPERTY_PREFIX.default.parameters.split-by-barcode-metadata").toBoolean(),
             environment.getNotBlankProperty("$PROPERTY_PREFIX.default.parameters.timeout")?.toDuration()
         )
 

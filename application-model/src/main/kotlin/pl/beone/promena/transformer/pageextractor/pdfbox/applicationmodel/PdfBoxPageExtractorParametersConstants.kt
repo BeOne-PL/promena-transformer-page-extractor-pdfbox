@@ -7,11 +7,11 @@ object PdfBoxPageExtractorParametersConstants {
     object Pages {
         const val NAME = "pages"
         @JvmField
-        val CLASS = getClazz<List<Int>>()
+        val CLASS = getClazz<List<List<Int>>>()
     }
 
-    object Relaxed {
-        const val NAME = "relaxed"
+    object SplitByBarcodeMetadata {
+        const val NAME = "splitByBarcodeMetadata"
         @JvmField
         val CLASS = Boolean::class.java
     }

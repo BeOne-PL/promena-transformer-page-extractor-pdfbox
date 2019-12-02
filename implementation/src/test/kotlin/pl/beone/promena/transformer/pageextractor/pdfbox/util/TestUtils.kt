@@ -8,9 +8,11 @@ import org.apache.pdfbox.io.MemoryUsageSetting
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.APPLICATION_PDF
+import pl.beone.promena.transformer.barcodedetector.metadata.BarcodeDetectorMetadata
 import pl.beone.promena.transformer.contract.communication.CommunicationParameters
 import pl.beone.promena.transformer.contract.communication.CommunicationWritableDataCreator
 import pl.beone.promena.transformer.contract.data.singleDataDescriptor
+import pl.beone.promena.transformer.contract.model.Metadata
 import pl.beone.promena.transformer.contract.model.Parameters
 import pl.beone.promena.transformer.contract.model.data.WritableData
 import pl.beone.promena.transformer.internal.model.data.memory.emptyMemoryWritableData
@@ -20,6 +22,11 @@ import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTran
 import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerDefaultParameters
 import pl.beone.promena.transformer.pageextractor.pdfbox.PdfBoxPageExtractorTransformerSettings
 import pl.beone.promena.transformer.pageextractor.pdfbox.extension.toPDDocument
+
+internal data class TextWithMetadataAssert(
+    val texts: List<String>,
+    val metadata: Metadata = emptyMetadata()
+)
 
 private object MemoryCommunicationWritableDataCreator : CommunicationWritableDataCreator {
     override fun create(communicationParameters: CommunicationParameters): WritableData = emptyMemoryWritableData()
@@ -42,25 +49,31 @@ internal fun createPdfBoxPageExtractorTransformer(
         communicationWritableDataCreator
     )
 
-private val data = getResourceAsBytes("/text/test.pdf").toMemoryData()
+private val data = getResourceAsBytes("/document/test.pdf").toMemoryData()
 
 internal fun test(
     parameters: Parameters,
-    assertPagesNumber: Int = -1,
-    assertPagesText: List<String> = emptyList(),
+    textWithMetadataAsserts: List<TextWithMetadataAssert> = emptyList(),
+    metadata: Metadata = emptyMetadata(),
     transformer: PdfBoxPageExtractorTransformer = createPdfBoxPageExtractorTransformer()
 ) {
     transformer
-        .transform(singleDataDescriptor(data, APPLICATION_PDF, emptyMetadata()), APPLICATION_PDF, parameters).let { transformedDataDescriptor ->
-            withClue("Transformed data should contain only <1> element") { transformedDataDescriptor.descriptors shouldHaveSize 1 }
+        .transform(singleDataDescriptor(data, APPLICATION_PDF, metadata), APPLICATION_PDF, parameters).let { transformedDataDescriptor ->
+            withClue("Transformed data should contain <${textWithMetadataAsserts.size}> element") { transformedDataDescriptor.descriptors shouldHaveSize textWithMetadataAsserts.size }
 
-            transformedDataDescriptor.descriptors[0].let {
-                val document = PDDocument.load(it.data.getInputStream())
-                withClue("Data should contain <$assertPagesNumber> number of pages") { document.numberOfPages shouldBe assertPagesNumber }
-                withClue("Data should contain <$assertPagesText> text on pages") { document.readPages() shouldBe assertPagesText }
+            transformedDataDescriptor.descriptors.zip(textWithMetadataAsserts)
+                .forEach { (singleTransformedDataDescriptor, textWithMetadataAssert) ->
+                    PDDocument.load(singleTransformedDataDescriptor.data.getInputStream()).use { pdDocument ->
+                        pdDocument.readPages() shouldBe textWithMetadataAssert.texts
+                    }
 
-                it.metadata shouldBe emptyMetadata()
-            }
+                    try {
+                        BarcodeDetectorMetadata(singleTransformedDataDescriptor.metadata).getBarcodes() shouldBe
+                                BarcodeDetectorMetadata(textWithMetadataAssert.metadata).getBarcodes()
+                    } catch (e: NoSuchElementException) {
+                        singleTransformedDataDescriptor.metadata shouldBe textWithMetadataAssert.metadata
+                    }
+                }
         }
 }
 

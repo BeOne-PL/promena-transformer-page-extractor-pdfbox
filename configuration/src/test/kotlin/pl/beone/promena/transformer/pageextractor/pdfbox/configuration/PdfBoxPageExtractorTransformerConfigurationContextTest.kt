@@ -13,49 +13,49 @@ import java.time.Duration
 class PdfBoxPageExtractorTransformerConfigurationContextTest {
 
     @Test
+    fun `setting context _ default values`() {
+        val environment = createEnvironment(
+            mapOf(
+                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.settings.memoryUsageSetting" to "org.apache.pdfbox.io.MemoryUsageSetting::setupMainMemoryOnly",
+                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.settings.fallbackMemoryUsageSetting" to "",
+
+                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.default.parameters.split-by-barcode-metadata" to "true",
+                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.default.parameters.timeout" to ""
+            )
+        )
+
+        val applicationContext = createConfigApplicationContext(environment, PdfBoxPageExtractorTransformerConfigurationContext::class.java)
+        with(applicationContext.getBean(PdfBoxPageExtractorTransformerSettings::class.java)) {
+            memoryUsageSetting.useMainMemory() shouldBe true
+            fallbackMemoryUsageSetting shouldBe null
+        }
+        with(applicationContext.getBean(PdfBoxPageExtractorTransformerDefaultParameters::class.java)) {
+            splitByBarcodeMetadata shouldBe true
+            timeout shouldBe null
+        }
+    }
+
+    @Test
     fun `setting context`() {
         val environment = createEnvironment(
             mapOf(
                 "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.settings.memoryUsageSetting" to "org.apache.pdfbox.io.MemoryUsageSetting::setupMainMemoryOnly",
                 "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.settings.fallbackMemoryUsageSetting" to "org.apache.pdfbox.io.MemoryUsageSetting::setupTempFileOnly",
 
-                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.default.parameters.relaxed" to "true",
+                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.default.parameters.split-by-barcode-metadata" to "true",
                 "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.default.parameters.timeout" to "5m"
             )
         )
 
         val applicationContext = createConfigApplicationContext(environment, PdfBoxPageExtractorTransformerConfigurationContext::class.java)
-        applicationContext.getBean(PdfBoxPageExtractorTransformerSettings::class.java).let {
-            it.memoryUsageSetting.useMainMemory() shouldBe true
-            it.fallbackMemoryUsageSetting shouldNotBe null
-            it.fallbackMemoryUsageSetting!!.useTempFile() shouldBe true
+        with(applicationContext.getBean(PdfBoxPageExtractorTransformerSettings::class.java)) {
+            memoryUsageSetting.useMainMemory() shouldBe true
+            fallbackMemoryUsageSetting shouldNotBe null
+            fallbackMemoryUsageSetting!!.useTempFile() shouldBe true
         }
-        applicationContext.getBean(PdfBoxPageExtractorTransformerDefaultParameters::class.java).let {
-            it.relaxed shouldBe true
-            it.timeout shouldBe Duration.ofMinutes(5)
-        }
-    }
-
-    @Test
-    fun `setting context _ empty timeout and fallbackMemoryUsageSetting`() {
-        val environment = createEnvironment(
-            mapOf(
-                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.settings.memoryUsageSetting" to "org.apache.pdfbox.io.MemoryUsageSetting::setupMainMemoryOnly",
-                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.settings.fallbackMemoryUsageSetting" to "",
-
-                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.default.parameters.relaxed" to "true",
-                "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.default.parameters.timeout" to ""
-            )
-        )
-
-        val applicationContext = createConfigApplicationContext(environment, PdfBoxPageExtractorTransformerConfigurationContext::class.java)
-        applicationContext.getBean(PdfBoxPageExtractorTransformerSettings::class.java).let {
-            it.memoryUsageSetting.useMainMemory() shouldBe true
-            it.fallbackMemoryUsageSetting shouldBe null
-        }
-        applicationContext.getBean(PdfBoxPageExtractorTransformerDefaultParameters::class.java).let {
-            it.relaxed shouldBe true
-            it.timeout shouldBe null
+        with(applicationContext.getBean(PdfBoxPageExtractorTransformerDefaultParameters::class.java)) {
+            splitByBarcodeMetadata shouldBe true
+            timeout shouldBe Duration.ofMinutes(5)
         }
     }
 

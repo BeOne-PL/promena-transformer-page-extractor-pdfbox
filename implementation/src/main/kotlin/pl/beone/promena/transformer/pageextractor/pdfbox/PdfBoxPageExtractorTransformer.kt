@@ -14,15 +14,15 @@ import pl.beone.promena.transformer.pageextractor.pdfbox.processor.Processor
 class PdfBoxPageExtractorTransformer(
     settings: PdfBoxPageExtractorTransformerSettings,
     defaultParameters: PdfBoxPageExtractorTransformerDefaultParameters,
-    private val communicationParameters: CommunicationParameters,
-    private val communicationWritableDataCreator: CommunicationWritableDataCreator
+    communicationParameters: CommunicationParameters,
+    communicationWritableDataCreator: CommunicationWritableDataCreator
 ) : Transformer {
 
-    private val processor = Processor(settings, defaultParameters)
+    private val processor = Processor(settings, defaultParameters, communicationParameters, communicationWritableDataCreator)
 
     override fun transform(dataDescriptor: DataDescriptor, targetMediaType: MediaType, parameters: Parameters): TransformedDataDescriptor =
         dataDescriptor.descriptors
-            .map { processor.process(it, parameters, communicationWritableDataCreator.create(communicationParameters)) }
+            .flatMap { processor.process(it, parameters) }
             .toTransformedDataDescriptor()
 
     override fun isSupported(dataDescriptor: DataDescriptor, targetMediaType: MediaType, parameters: Parameters) {

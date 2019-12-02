@@ -17,6 +17,7 @@
 
     <properties>
         <page-extractor-pdfbox.version>1.0.0</page-extractor-pdfbox.version>
+        <barcode-detector-metadata.version>1.0.0</barcode-detector-metadata.version>
 
         <pdfbox.version>2.0.16</pdfbox.version>
     </properties>
@@ -40,6 +41,11 @@
             <groupId>pl.beone.promena.transformer</groupId>
             <artifactId>page-extractor-pdfbox-application-model</artifactId>
             <version>${page-extractor-pdfbox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.beone.promena.transformer</groupId>
+            <artifactId>barcode-detector-metadata</artifactId>
+            <version>${barcode-detector-metadata.version}</version>
         </dependency>
 
         <dependency>
