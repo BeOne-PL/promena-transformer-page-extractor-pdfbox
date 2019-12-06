@@ -2,7 +2,7 @@ package pl.beone.promena.transformer.pageextractor.pdfbox.configuration
 
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.mock.env.MockEnvironment
@@ -13,7 +13,7 @@ import java.time.Duration
 class PdfBoxPageExtractorTransformerConfigurationContextTest {
 
     @Test
-    fun `setting context _ default values`() {
+    fun `setting context _ default`() {
         val environment = createEnvironment(
             mapOf(
                 "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.settings.memoryUsageSetting" to "org.apache.pdfbox.io.MemoryUsageSetting::setupMainMemoryOnly",
@@ -36,7 +36,7 @@ class PdfBoxPageExtractorTransformerConfigurationContextTest {
     }
 
     @Test
-    fun `setting context`() {
+    fun `setting context _ all`() {
         val environment = createEnvironment(
             mapOf(
                 "transformer.pl.beone.promena.transformer.pageextractor.pdfbox.settings.memoryUsageSetting" to "org.apache.pdfbox.io.MemoryUsageSetting::setupMainMemoryOnly",

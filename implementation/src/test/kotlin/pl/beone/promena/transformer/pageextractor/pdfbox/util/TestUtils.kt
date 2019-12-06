@@ -57,24 +57,25 @@ internal fun test(
     metadata: Metadata = emptyMetadata(),
     transformer: PdfBoxPageExtractorTransformer = createPdfBoxPageExtractorTransformer()
 ) {
-    transformer
-        .transform(singleDataDescriptor(data, APPLICATION_PDF, metadata), APPLICATION_PDF, parameters).let { transformedDataDescriptor ->
-            withClue("Transformed data should contain <${textWithMetadataAsserts.size}> element") { transformedDataDescriptor.descriptors shouldHaveSize textWithMetadataAsserts.size }
+    with(
+        transformer.transform(singleDataDescriptor(data, APPLICATION_PDF, metadata), APPLICATION_PDF, parameters)
+    ) {
+        withClue("Transformed data should contain <${textWithMetadataAsserts.size}> element") { descriptors shouldHaveSize textWithMetadataAsserts.size }
 
-            transformedDataDescriptor.descriptors.zip(textWithMetadataAsserts)
-                .forEach { (singleTransformedDataDescriptor, textWithMetadataAssert) ->
-                    PDDocument.load(singleTransformedDataDescriptor.data.getInputStream()).use { pdDocument ->
-                        pdDocument.readPages() shouldBe textWithMetadataAssert.texts
-                    }
-
-                    try {
-                        BarcodeDetectorMetadata(singleTransformedDataDescriptor.metadata).getBarcodes() shouldBe
-                                BarcodeDetectorMetadata(textWithMetadataAssert.metadata).getBarcodes()
-                    } catch (e: NoSuchElementException) {
-                        singleTransformedDataDescriptor.metadata shouldBe textWithMetadataAssert.metadata
-                    }
+        descriptors.zip(textWithMetadataAsserts)
+            .forEach { (singleTransformedDataDescriptor, textWithMetadataAssert) ->
+                PDDocument.load(singleTransformedDataDescriptor.data.getInputStream()).use { pdDocument ->
+                    pdDocument.readPages() shouldBe textWithMetadataAssert.texts
                 }
-        }
+
+                try {
+                    BarcodeDetectorMetadata(singleTransformedDataDescriptor.metadata).getBarcodes() shouldBe
+                            BarcodeDetectorMetadata(textWithMetadataAssert.metadata).getBarcodes()
+                } catch (e: NoSuchElementException) {
+                    singleTransformedDataDescriptor.metadata shouldBe textWithMetadataAssert.metadata
+                }
+            }
+    }
 }
 
 private fun PDDocument.readPages(): List<String> =
