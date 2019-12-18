@@ -8,7 +8,7 @@ import org.apache.pdfbox.io.MemoryUsageSetting
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
 import pl.beone.promena.transformer.applicationmodel.mediatype.MediaTypeConstants.APPLICATION_PDF
-import pl.beone.promena.transformer.barcodedetector.metadata.BarcodeDetectorMetadata
+import pl.beone.promena.transformer.barcodedetector.metadata.BarcodeDetectorMetadataGetter
 import pl.beone.promena.transformer.contract.communication.CommunicationParameters
 import pl.beone.promena.transformer.contract.communication.CommunicationWritableDataCreator
 import pl.beone.promena.transformer.contract.data.singleDataDescriptor
@@ -69,8 +69,8 @@ internal fun test(
                 }
 
                 try {
-                    BarcodeDetectorMetadata(singleTransformedDataDescriptor.metadata).getBarcodes() shouldBe
-                            BarcodeDetectorMetadata(textWithMetadataAssert.metadata).getBarcodes()
+                    BarcodeDetectorMetadataGetter(singleTransformedDataDescriptor.metadata).getBarcodes() shouldBe
+                            BarcodeDetectorMetadataGetter(textWithMetadataAssert.metadata).getBarcodes()
                 } catch (e: NoSuchElementException) {
                     singleTransformedDataDescriptor.metadata shouldBe textWithMetadataAssert.metadata
                 }

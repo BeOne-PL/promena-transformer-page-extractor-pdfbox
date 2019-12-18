@@ -2,9 +2,9 @@ package pl.beone.promena.transformer.pageextractor.pdfbox.processor
 
 import mu.KotlinLogging
 import org.apache.pdfbox.pdmodel.PDDocument
-import pl.beone.promena.transformer.barcodedetector.metadata.BarcodeDetectorMetadata
-import pl.beone.promena.transformer.barcodedetector.metadata.BarcodeDetectorMetadata.Barcode
-import pl.beone.promena.transformer.barcodedetector.metadata.barcodeDetectorMetadata
+import pl.beone.promena.transformer.barcodedetector.metadata.BarcodeDetectorMetadataBuilder
+import pl.beone.promena.transformer.barcodedetector.metadata.BarcodeDetectorMetadataGetter
+import pl.beone.promena.transformer.barcodedetector.metadata.BarcodeDetectorMetadataGetter.Barcode
 import pl.beone.promena.transformer.contract.data.TransformedDataDescriptor
 import pl.beone.promena.transformer.contract.data.singleTransformedDataDescriptor
 import pl.beone.promena.transformer.contract.model.Metadata
@@ -27,7 +27,7 @@ internal class SplitByBarcodeMetadataParameterProcessor(
 
     fun process(data: Data, metadata: Metadata): List<TransformedDataDescriptor.Single> =
         try {
-            val barcodes = BarcodeDetectorMetadata(metadata).getBarcodes()
+            val barcodes = BarcodeDetectorMetadataGetter(metadata).getBarcodes()
             val barcodesWithPage = barcodes.getWithPage()
             val barcodesWithoutPage = barcodes - barcodesWithPage
 
@@ -44,7 +44,7 @@ internal class SplitByBarcodeMetadataParameterProcessor(
                         .map { (pageWithBarcodes, pageWithBarcodes2) ->
                             singleTransformedDataDescriptor(
                                 createDataFromPageRange(pdDocument, pageWithBarcodes.pageIndex, pageWithBarcodes2.pageIndex),
-                                barcodeDetectorMetadata(pageWithBarcodes.barcodes)
+                                BarcodeDetectorMetadataBuilder(pageWithBarcodes.barcodes.map(Barcode::metadata)).build()
                             )
                         }.toList()
                 }
