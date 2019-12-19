@@ -70,13 +70,13 @@ class PdfBoxPageExtractorTransformerTest {
 
     @Test
     fun transform_mainMemoryUsageSetting_splitByBarcodeMetadata() {
-        val barcodeMetadata = BarcodeBuilder(text = "1", page = 1).build()
-        val barcodeMetadata2 = BarcodeBuilder(text = "2").build()
-        val barcodeMetadata3 = BarcodeBuilder(text = "3", page = 4).build()
-        val barcodeMetadata4 = BarcodeBuilder(text = "4", page = 4).build()
-        val barcodeMetadata5 = BarcodeBuilder(text = "5", page = 5).build()
-        val barcodeMetadata6 = BarcodeBuilder(text = "6", page = 10).build()
-        val barcodeMetadata7 = BarcodeBuilder(text = "7", page = 10).build()
+        val barcodeMetadata = BarcodeBuilder().text("1").page(1).build()
+        val barcodeMetadata2 = BarcodeBuilder().text("2").build()
+        val barcodeMetadata3 = BarcodeBuilder().text("3").page(4).build()
+        val barcodeMetadata4 = BarcodeBuilder().text("4").page(4).build()
+        val barcodeMetadata5 = BarcodeBuilder().text("5").page(5).build()
+        val barcodeMetadata6 = BarcodeBuilder().text("6").page(10).build()
+        val barcodeMetadata7 = BarcodeBuilder().text("7").page(10).build()
 
         test(
             pdfBoxPageExtractorParameters(splitByBarcodeMetadata = true),
@@ -113,7 +113,7 @@ class PdfBoxPageExtractorTransformerTest {
 
     @Test
     fun transform_mainMemoryUsageSetting_splitByBarcodeMetadata_barcodeMetadataWithoutFirstPage() {
-        val barcodeMetadata = BarcodeBuilder(text = "1", page = 2).build()
+        val barcodeMetadata = BarcodeBuilder().text("1").page(2).build()
 
         test(
             pdfBoxPageExtractorParameters(splitByBarcodeMetadata = true),
@@ -133,8 +133,8 @@ class PdfBoxPageExtractorTransformerTest {
 
     @Test
     fun transform_mainMemoryUsageSetting_splitByBarcodeMetadata_barcodeMetadataWithoutFirstPageAndWithElementWithoutPage() {
-        val barcodeMetadata = BarcodeBuilder(text = "1", page = 2).build()
-        val barcodeMetadata2 = BarcodeBuilder(text = "2").build()
+        val barcodeMetadata = BarcodeBuilder().text("1").page(2).build()
+        val barcodeMetadata2 = BarcodeBuilder().text("2").build()
 
         test(
             pdfBoxPageExtractorParameters(splitByBarcodeMetadata = true),
@@ -167,14 +167,14 @@ class PdfBoxPageExtractorTransformerTest {
 
     @Test
     fun transform_mainMemoryUsageSetting_splitByBarcodeMetadata_defaultParameterIsTrue() {
-        val barcodeMetadata = BarcodeBuilder(text = "1", page = 2).build()
+        val barcodeMetadata = BarcodeBuilder().text("1").page(2).build()
 
         test(
             pdfBoxPageExtractorParameters(),
             listOf(
                 TextWithMetadataAssert(
                     listOf("Page 1"),
-                    BarcodeDetectorMetadataBuilder().build()
+                    emptyMetadata()
                 ),
                 TextWithMetadataAssert(
                     listOf("Page 2", "Page 3", "Page 4", "Page 5", "Page 6", "Page 7", "Page 8", "Page 9", "Page 10"),
@@ -190,7 +190,7 @@ class PdfBoxPageExtractorTransformerTest {
     @Test
     fun transform_mainMemoryUsageSetting_splitByBarcodeMetadata_defaultParameterIsFalse() {
         val barcodeDetectorMetadata = BarcodeDetectorMetadataBuilder()
-            .barcode(BarcodeBuilder(text = "1", page = 2).build())
+            .barcode(BarcodeBuilder().text("1").page(2).build())
             .build()
 
         test(

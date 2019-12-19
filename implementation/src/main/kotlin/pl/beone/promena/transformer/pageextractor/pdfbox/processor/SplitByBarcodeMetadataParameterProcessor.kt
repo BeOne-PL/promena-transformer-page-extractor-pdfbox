@@ -44,7 +44,7 @@ internal class SplitByBarcodeMetadataParameterProcessor(
                         .map { (pageWithBarcodes, pageWithBarcodes2) ->
                             singleTransformedDataDescriptor(
                                 createDataFromPageRange(pdDocument, pageWithBarcodes.pageIndex, pageWithBarcodes2.pageIndex),
-                                BarcodeDetectorMetadataBuilder(pageWithBarcodes.barcodes.map(Barcode::metadata)).build()
+                                createBarcodeMetadata(pageWithBarcodes.barcodes)
                             )
                         }.toList()
                 }
@@ -75,8 +75,12 @@ internal class SplitByBarcodeMetadataParameterProcessor(
 
     private fun addBarcodesToFirstElement(listOfBarcodesWithPage: List<BarcodesWithPage>, barcodesWithoutPage: List<Barcode>): List<BarcodesWithPage> =
         with(listOfBarcodesWithPage) {
-            listOf(BarcodesWithPage(first().barcodes + barcodesWithoutPage, first().pageIndex)) +
-                    subList(1, size)
+            listOf(
+                BarcodesWithPage(
+                    listOfBarcodesWithPage.first().barcodes + barcodesWithoutPage,
+                    listOfBarcodesWithPage.first().pageIndex
+                )
+            ) + subList(1, size)
         }
 
     private fun addElementWithoutBarcodes(listOfBarcodesWithPage: List<BarcodesWithPage>, numberOfPages: Int): List<BarcodesWithPage> =
@@ -86,4 +90,9 @@ internal class SplitByBarcodeMetadataParameterProcessor(
         pdfCreator.create(
             pdDocument.extractPages((pageFrom until pageTo).toList())
         )
+
+    private fun createBarcodeMetadata(barcodes: List<Barcode>): Metadata =
+        BarcodeDetectorMetadataBuilder().apply {
+            barcodes.forEach { barcode(it.metadata) }
+        }.build()
 }
