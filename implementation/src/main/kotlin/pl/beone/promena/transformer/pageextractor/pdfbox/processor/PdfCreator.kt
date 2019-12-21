@@ -43,7 +43,7 @@ internal class PdfCreator(
     private fun mergePages(pages: List<PDPage>, memoryUsageSetting: MemoryUsageSetting, outputStream: OutputStream) {
         PDFMergerUtility()
             .apply { destinationStream = outputStream }
-            .also { merger -> merger.addSources(pages.map { pdPage -> pdPage.toPDDocument().getInputStream() }) }
+            .also { merger -> merger.addSources(pages.map { pdPage -> pdPage.toPDDocument().use { it.getInputStream() } }) }
             .also { merger -> merger.mergeDocuments(memoryUsageSetting) }
     }
 

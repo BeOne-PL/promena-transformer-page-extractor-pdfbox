@@ -79,10 +79,8 @@ internal fun test(
 }
 
 private fun PDDocument.readPages(): List<String> =
-    use { document ->
-        (0 until numberOfPages)
-            .map { page -> document.readText(page) }
-    }
+    (0 until numberOfPages)
+        .map { page -> readText(page) }
 
 private fun PDDocument.readText(page: Int): String =
-    PDFTextStripper().getText(getPage(page).toPDDocument()).trim()
+    getPage(page).toPDDocument().use { PDFTextStripper().getText(it).trim() }

@@ -148,7 +148,7 @@ class PdfBoxPageExtractorTransformerTest {
                     BarcodeDetectorMetadataBuilder().barcode(barcodeMetadata).build()
                 )
             ),
-            BarcodeDetectorMetadataBuilder().barcode(barcodeMetadata).build()
+            BarcodeDetectorMetadataBuilder().barcode(barcodeMetadata).barcode(barcodeMetadata2).build()
         )
     }
 
