@@ -1,7 +1,7 @@
 # Promena Transformer - `page extractor - PDFBox`
-This transformer provides functionality to extract range of pages from `application/pdf` documents using PDFBox 2.0.16.
+This transformer provides functionality to extract a range of pages from `application/pdf` documents using PDFBox 2.0.16.
 
-Visit [Promena#Transformers](https://gitlab.office.beone.pl/promena/promena#transformers) to understand the repository structure.
+Visit [Promena#Transformer](https://gitlab.office.beone.pl/promena/promena#transformer) to understand the repository structure.
 
 ## Transformation [`PdfBoxPageExtractorDsl`](./application-model/src/main/kotlin/pl/beone/promena/transformer/pageextractor/pdfbox/applicationmodel/PdfBoxPageExtractorDsl.kt), [`PdfBoxPageExtractorParametersDsl`](./application-model/src/main/kotlin/pl/beone/promena/transformer/pageextractor/pdfbox/applicationmodel/PdfBoxPageExtractorParametersDsl.kt)
 The [`DataDescriptor`](https://gitlab.office.beone.pl/promena/promena/blob/master/base/promena-transformer/contract/src/main/kotlin/pl/beone/promena/transformer/contract/data/DataDescriptor.kt) has to contain at least one descriptor. If more than one descriptor is passed, the transformation will be performed on each of them separately.
@@ -12,7 +12,7 @@ The [`DataDescriptor`](https://gitlab.office.beone.pl/promena/promena/blob/maste
 
 ### Parameters [`PdfBoxPageExtractorSupport.ParametersSupport`](./application-model/src/main/kotlin/pl/beone/promena/transformer/pageextractor/pdfbox/applicationmodel/PdfBoxPageExtractorSupport.kt)
 * `pages`, `List<List<Int>>`, optional - extracts each list of the pages (indexed from 1) of the lists to separate [`TransformedDataDescriptor`](https://gitlab.office.beone.pl/promena/promena/blob/master/base/promena-transformer/contract/src/main/kotlin/pl/beone/promena/transformer/contract/data/TransformedDataDescriptor.kt)
-* `splitByBarcodeMetadata`, `Boolean`, optional - extracts pages based on [barcode detector metadata](https://gitlab.office.beone.pl/promena/promena-transformer-barcode-detector-metadata) producing by `barcode detector` transformers. This parameter causes that the pages between subsequent barcodes are extracted to separate [`TransformedDataDescriptor`](https://gitlab.office.beone.pl/promena/promena/blob/master/base/promena-transformer/contract/src/main/kotlin/pl/beone/promena/transformer/contract/data/TransformedDataDescriptor.kt) with metadata for the given range of pages
+* `splitByBarcodeMetadata`, `Boolean`, optional - extracts pages based on [`barcode-detector-metadata`](https://gitlab.office.beone.pl/promena/promena-transformer-barcode-detector-metadata) producing by `barcode detector` transformers. This parameter causes that the pages between subsequent barcodes are extracted to separate [`TransformedDataDescriptor`](https://gitlab.office.beone.pl/promena/promena/blob/master/base/promena-transformer/contract/src/main/kotlin/pl/beone/promena/transformer/contract/data/TransformedDataDescriptor.kt) with metadata for the given range of pages
 
 ## Dependency
 ```xml
