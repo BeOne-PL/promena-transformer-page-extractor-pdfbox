@@ -9,7 +9,7 @@ class PdfBoxPageExtractorDslTest {
 
     @Test
     fun pdfBoxPageExtractorTransformation() {
-        with(pdfBoxPageExtractorTransformation(pdfBoxPageExtractorParameters())) {
+        with(pdfBoxPageExtractorTransformation(APPLICATION_PDF, pdfBoxPageExtractorParameters())) {
             transformerId shouldBe TRANSFORMER_ID
             targetMediaType shouldBe APPLICATION_PDF
             parameters.getAll().size shouldBe 0

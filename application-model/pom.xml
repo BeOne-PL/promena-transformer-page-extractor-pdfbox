@@ -13,7 +13,7 @@
 
     <groupId>pl.beone.promena.transformer</groupId>
     <artifactId>page-extractor-pdfbox-application-model</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <dependencies>
         <dependency>
