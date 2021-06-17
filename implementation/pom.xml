@@ -19,7 +19,7 @@
         <page-extractor-pdfbox.version>1.0.1</page-extractor-pdfbox.version>
         <barcode-detector-metadata.version>1.0.0</barcode-detector-metadata.version>
 
-        <pdfbox.version>2.0.16</pdfbox.version>
+        <pdfbox.version>2.0.24</pdfbox.version>
     </properties>
 
     <dependencies>
