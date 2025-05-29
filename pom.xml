@@ -6,7 +6,7 @@
 
     <groupId>pl.beone.promena.transformer</groupId>
     <artifactId>page-extractor-pdfbox-root</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <name>pl.beone.promena.transformer:page-extractor-pdfbox-root</name>
@@ -21,6 +21,7 @@
     <properties>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <kotlin.version>1.9.23</kotlin.version>
     </properties>
 
     <build>
